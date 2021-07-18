@@ -16,8 +16,12 @@ fastify.route({
   url: '/classify',
   preHandler: upload.single('image'),
   handler: async (request, reply) => {
-    const prediction = await classify.classify(request.file)
-    reply.code(200).send(prediction)
+    try {
+      const prediction = await classify.classify(request.file)
+      reply.code(200).send(prediction)
+    } catch (err) {
+      reply.code(500).send(err)
+    }
   },
 })
 
